@@ -4,7 +4,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5 import QtGui
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication,  QMainWindow, QLabel
+from PyQt5.QtWidgets import QApplication,  QMainWindow, QLabel, QLineEdit, QPushButton
 from PyQt5 import QtWidgets
 import requests
 
@@ -12,18 +12,22 @@ import requests
 # ПЕРЕМЕЩЕНИЕ НА КЛАВИШИ WSAD
 class App(QMainWindow):
     def __init__(self):
+        self.LAYERS = ['sat', 'sat,skl', 'map']
         super().__init__()
         self.pixmap, self.image = None, None
         self.z = 1
+        self.layer = 0
         self.horiz = '0'
         self.vert = '0'
         self.count = 0
+        self.point = None
         self.unitUI()
         self.plus_button.clicked.connect(self.zoom_in)
         self.minus_button.clicked.connect(self.zoom_out)
+        self.layers_button.clicked.connect(self.change_layer)
 
     def unitUI(self):
-        self.setGeometry(100, 100, 750, 550)
+        self.setGeometry(100, 100, 750, 650)
         self.setWindowTitle('Карта')
         self.image = QLabel(self)
         self.image.move(0, 0)
@@ -91,17 +95,43 @@ class App(QMainWindow):
         self.minus_button.setObjectName("minus_button")
         self.verticalLayout.addWidget(self.minus_button)
 
+        self.layers_button = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.layers_button.setText("")
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap("layers.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.layers_button.setIcon(icon3)
+        self.layers_button.setIconSize(QtCore.QSize(35, 35))
+        self.layers_button.setAutoDefault(False)
+        self.layers_button.setDefault(False)
+        self.layers_button.setFlat(True)
+        self.layers_button.setObjectName("layers_button")
+        self.verticalLayout.addWidget(self.layers_button)
+
         self.setCentralWidget(self.centralwidget)
+
+        self.info = QLabel(self)
+        self.info.setText('Поиск по адресу:')
+        self.info.move(20, 550)
+
+        self.coord1 = QLineEdit(self)
+        self.coord1.resize(300, 30)
+        self.coord1.move(120, 550)
+
+        self.btn = QPushButton('пуск', self)
+        self.btn.resize(60, 30)
+        self.btn.move(430, 550)
+        self.btn.clicked.connect(self.makepoint)
 
     def drawmap(self):
         map_request = "https://static-maps.yandex.ru/1.x/"
         x, y, = 650, 450
         search_params = {
-            "l": "sat",
+            "l": str(self.LAYERS[self.layer % 3]),
             "ll": f'{self.horiz},{self.vert}',
             "z": str(self.z),
             "format": "json",
-            "size": f"{x},{y}"
+            "size": f"{x},{y}",
+            "pt": self.point
         }
 
         response = requests.get(map_request, params=search_params)
@@ -109,9 +139,38 @@ class App(QMainWindow):
         self.pixmap.loadFromData(response.content)
         self.image.setPixmap(self.pixmap)
 
+    def makepoint(self):
+        toponym_to_find = " ".join(self.coord1.text())
+
+        geocoder_api_server = "http://geocode-maps.yandex.ru/1.x/"
+
+        geocoder_params = {
+            "apikey": "40d1649f-0493-4b70-98ba-98533de7710b",
+            "geocode": toponym_to_find,
+            "format": "json"}
+
+        response = requests.get(geocoder_api_server, params=geocoder_params)
+
+        if not response:
+            print('NO ADDRESS LIKE THIS')
+
+        json_response = response.json()
+        toponym = json_response["response"]["GeoObjectCollection"][
+            "featureMember"][0]["GeoObject"]
+        toponym_coodrinates = toponym["Point"]["pos"]
+        toponym_longitude, toponym_lattitude = toponym_coodrinates.split(" ")
+
+        self.point = f"{toponym_longitude},{toponym_lattitude},pmgnm1"
+        self.coord1.setEnabled(False)
+        self.lineEdit.setText(toponym_lattitude)
+        self.lineEdit_2.setText(toponym_longitude)
+        self.changecoords()
+        self.drawmap()
+
     def enable(self):
         self.lineEdit_2.setEnabled(True)
         self.lineEdit.setEnabled(True)
+        self.coord1.setEnabled(True)
 
     def zoom_in(self):
         self.z += 1
@@ -123,6 +182,10 @@ class App(QMainWindow):
         self.z -= 1
         if self.z < 2:
             self.z = 2
+        self.drawmap()
+
+    def change_layer(self):
+        self.layer += 1
         self.drawmap()
 
     def changecoords(self):

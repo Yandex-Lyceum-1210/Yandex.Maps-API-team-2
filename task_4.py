@@ -140,14 +140,14 @@ class App(QMainWindow):
             self.z = 2
         self.drawmap()
 
-    def change_layer(self, layer):
+    def change_layer(self):
         self.layer += 1
         self.drawmap()
 
     def changecoords(self):
-        if -70 <= int(self.lineEdit.text()) <= 70:
+        if -70 <= float(self.lineEdit.text()) <= 70:
             self.vert = self.lineEdit.text()
-        if -180 <= int(self.lineEdit_2.text()) <= 180:
+        if -180 <= float(self.lineEdit_2.text()) <= 180:
             self.horiz = self.lineEdit_2.text()
         self.lineEdit.setEnabled(False)
         self.lineEdit_2.setEnabled(False)
