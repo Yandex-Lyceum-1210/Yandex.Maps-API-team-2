@@ -127,6 +127,10 @@ class App(QMainWindow):
         self.btn_reset.move(500, 550)
         self.btn_reset.clicked.connect(self.reset_point)
 
+        self.search_result = QLabel(self)
+        self.search_result.resize(600, 30)
+        self.search_result.move(20, 580)
+
     def drawmap(self):
         map_request = "https://static-maps.yandex.ru/1.x/"
         x, y, = 650, 450
@@ -157,14 +161,17 @@ class App(QMainWindow):
         response = requests.get(geocoder_api_server, params=geocoder_params)
 
         if not response:
-            print('NO ADDRESS LIKE THIS')
+            self.search_result.setText('NO ADDRESS LIKE THIS')
+            return
 
         json_response = response.json()
         toponym = json_response["response"]["GeoObjectCollection"][
             "featureMember"][0]["GeoObject"]
         toponym_coodrinates = toponym["Point"]["pos"]
         toponym_longitude, toponym_lattitude = toponym_coodrinates.split(" ")
+        toponym_address = toponym['metaDataProperty']['GeocoderMetaData']['Address']['formatted']
 
+        self.search_result.setText('Адрес объекта: ' + toponym_address)
         self.point = f"{toponym_longitude},{toponym_lattitude},pmgnm1"
         self.coord1.setEnabled(False)
         self.lineEdit.setText(toponym_lattitude)
@@ -175,6 +182,7 @@ class App(QMainWindow):
     def reset_point(self):
         self.point = None
         self.coord1.setText('')
+        self.search_result.setText('')
         self.lineEdit.setText('')
         self.lineEdit_2.setText('')
         self.drawmap()

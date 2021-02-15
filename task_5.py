@@ -114,12 +114,12 @@ class App(QMainWindow):
         self.info.move(20, 550)
 
         self.coord1 = QLineEdit(self)
-        self.coord1.resize(300, 30)
-        self.coord1.move(120, 550)
+        self.coord1.resize(309, 28)
+        self.coord1.move(130, 551)
 
-        self.btn = QPushButton('пуск', self)
+        self.btn = QPushButton('Найти', self)
         self.btn.resize(60, 30)
-        self.btn.move(430, 550)
+        self.btn.move(440, 550)
         self.btn.clicked.connect(self.makepoint)
 
     def drawmap(self):
@@ -140,7 +140,7 @@ class App(QMainWindow):
         self.image.setPixmap(self.pixmap)
 
     def makepoint(self):
-        toponym_to_find = " ".join(self.coord1.text())
+        toponym_to_find = "".join(self.coord1.text())
 
         geocoder_api_server = "http://geocode-maps.yandex.ru/1.x/"
 
