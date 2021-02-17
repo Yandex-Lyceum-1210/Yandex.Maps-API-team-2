@@ -155,16 +155,16 @@ class App(QMainWindow):
 
     def movemap(self, button):
         if button == 'right':
-            if int(self.horiz) < 180:
+            if float(self.horiz) < 180:
                 self.horiz = str(int(self.horiz) + 1)
         elif button == 'left':
-            if int(self.horiz) > -180:
+            if float(self.horiz) > -180:
                 self.horiz = str(int(self.horiz) - 1)
         elif button == 'up':
-            if int(self.vert) < 73:
+            if float(self.vert) < 73:
                 self.vert = str(int(self.vert) + 1)
         elif button == 'down':
-            if int(self.vert) > -73:
+            if float(self.vert) > -73:
                 self.vert = str(int(self.vert) - 1)
         self.drawmap()
 
