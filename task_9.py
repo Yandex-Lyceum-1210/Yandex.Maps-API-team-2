@@ -23,7 +23,6 @@ class App(QMainWindow):
         self.point = None
         self.toponym_address = None
         self.postal_code = None
-        self.add_index_to_address = False
         self.unitUI()
         self.plus_button.clicked.connect(self.zoom_in)
         self.minus_button.clicked.connect(self.zoom_out)
@@ -205,6 +204,8 @@ class App(QMainWindow):
 
     def reset_point(self):
         self.point = None
+        self.toponym_address = None
+        self.postal_code = None
         self.coord1.setText('')
         self.search_result.setText('')
         self.lineEdit.setText('')
