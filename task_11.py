@@ -3,7 +3,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5 import QtGui
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication,  QMainWindow, QLabel, QLineEdit, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton
 from PyQt5 import QtWidgets
 import requests
 
@@ -23,6 +23,7 @@ def click_on_map(function):
             else:
                 left = False
             function(self, event, left)
+
     return wrapper
 
 
@@ -60,6 +61,7 @@ def map_edge_limits(function):
             self.longitude = -max_longitude
             self.z = first_z
         function(self, point_mode)
+
     return wrapper
 
 
@@ -75,21 +77,21 @@ class App(QMainWindow):
         self.toponym_address = None
         self.postal_code = None
         self.point = None
-        
+
         self.unitUI()
-        
+
         self.coordinate_search_button.clicked.connect(self.changecoords)
         self.address_search_button.clicked.connect(self.makepoint)
         self.reset_button.clicked.connect(self.reset_point)
         self.plus_button.clicked.connect(self.zoom_in)
         self.minus_button.clicked.connect(self.zoom_out)
         self.layers_button.clicked.connect(self.change_layer)
-        self.with_postal_code_checkbox.clicked.connect(self.add_index)
+        self.with_postal_code_checkbox.clicked.connect(self.add_postal_code)
 
     def unitUI(self):
         self.setGeometry(100, 100, 700, 650)
         self.setWindowTitle('Карта')
-        
+
         self.map = QLabel(self)
         self.map.move(0, 0)
         self.map.resize(MAP_WIDTH, MAP_HEIGHT)
@@ -163,7 +165,6 @@ class App(QMainWindow):
         self.address_search_input = QLineEdit(self)
         self.address_search_input.resize(309, 28)
         self.address_search_input.move(130, 551)
-
 
         self.address_search_button = QPushButton('Найти', self)
         self.address_search_button.resize(60, 30)

@@ -74,7 +74,7 @@ class App(QMainWindow):
         self.plus_button.clicked.connect(self.zoom_in)
         self.minus_button.clicked.connect(self.zoom_out)
         self.layers_button.clicked.connect(self.change_layer)
-        self.with_postal_code_checkbox.clicked.connect(self.add_index)
+        self.with_postal_code_checkbox.clicked.connect(self.add_postal_code)
 
     def unitUI(self):
         self.setGeometry(100, 100, 700, 650)
