@@ -3,7 +3,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5 import QtGui
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
 from PyQt5 import QtWidgets
 import requests
 
