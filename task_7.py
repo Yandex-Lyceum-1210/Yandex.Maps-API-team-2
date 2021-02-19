@@ -189,6 +189,7 @@ class App(QMainWindow):
             "format": "json"}
         response = requests.get(GEOCODER_API_SERVER, params=geocoder_params)
         if not response:
+            self.search_result_label.setText('Адрес не найден!')
             return
 
         json_response = response.json()
@@ -196,6 +197,7 @@ class App(QMainWindow):
             toponym = json_response["response"]["GeoObjectCollection"][
                 "featureMember"][0]["GeoObject"]
         except IndexError:
+            self.search_result_label.setText('Адрес не найден!')
             return
         toponym_coodrinates = toponym["Point"]["pos"]
         toponym_latitude, toponym_longitude = toponym_coodrinates.split(" ")
@@ -210,7 +212,7 @@ class App(QMainWindow):
             self.longitude_input.setText(toponym_longitude)
             self.changecoords(True)
         except TypeError:
-            pass
+            self.search_result_label.setText('Адрес не найден!')
 
     def reset_point(self):
         self.point = None
@@ -244,7 +246,7 @@ class App(QMainWindow):
             self.latitude = str(float(self.longitude_input.text()))
             self.drawmap(point_mode)
         except ValueError:
-            pass
+            self.search_result_label.setText('Неверный формат ввода!')
 
     def movemap(self, button):
         if button == 'right':
