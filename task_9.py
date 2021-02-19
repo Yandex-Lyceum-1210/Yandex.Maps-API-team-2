@@ -245,7 +245,7 @@ class App(QMainWindow):
         self.longitude_input.setText('')
         self.drawmap(False)
 
-    def add_index(self):
+    def add_postal_code(self):
         if self.toponym_address:
             if self.with_postal_code_checkbox.isChecked() and self.postal_code:
                 self.search_result_label.setText(f'Адрес объекта: {self.postal_code}, {self.toponym_address}')
