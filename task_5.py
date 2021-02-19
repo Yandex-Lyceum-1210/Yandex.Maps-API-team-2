@@ -1,3 +1,16 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                     Большая задача по Maps API. ЧАСТЬ №5                      #
+#                Авторы решения: Аксенов Никита и Прохорова Анна                #
+#                                                                               #
+#                        Примечания по работе программы:                        #
+# 1. Перемещение карты с помощью клавиш вверх/вниз/вправо/влево сделать не      #
+#    удалось из-за особенности работы PyQt5. Поэтому были использованы кнопки   #
+#    WASD (W - вверх, A - влево, S - вниз, D - вправо).                         #
+# 2. Для корректного отображения иконок увеличения и уменьшения масштаба,       #
+#    изменения слоя карты, в папке с запускаемой программой должны быть         #
+#    изображения plus.png, minus.png, layers.png.                               #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 import sys
 from PyQt5.QtGui import QPixmap
 from PyQt5 import QtGui
@@ -53,7 +66,6 @@ def map_edge_limits(function):
     return wrapper
 
 
-# ПЕРЕМЕЩЕНИЕ НА КЛАВИШИ WASD
 class App(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -63,7 +75,6 @@ class App(QMainWindow):
         self.latitude = '0'
 
         self.point = None
-
         self.unitUI()
 
         self.coordinate_search_button.clicked.connect(self.changecoords)
