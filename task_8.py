@@ -111,10 +111,12 @@ class App(QMainWindow):
 
         self.longitude_input = QtWidgets.QLineEdit(self.horizontalLayoutWidget)
         self.longitude_input.setObjectName("longitude_input")
+        self.longitude_input.setPlaceholderText('Широта')
         self.horizontalLayout.addWidget(self.longitude_input)
 
         self.latitude_input = QtWidgets.QLineEdit(self.horizontalLayoutWidget)
         self.latitude_input.setObjectName("latitude_input")
+        self.latitude_input.setPlaceholderText('Долгота')
         self.horizontalLayout.addWidget(self.latitude_input)
 
         self.coordinate_search_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)

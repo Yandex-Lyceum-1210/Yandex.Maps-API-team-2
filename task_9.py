@@ -113,10 +113,12 @@ class App(QMainWindow):
 
         self.longitude_input = QtWidgets.QLineEdit(self.horizontalLayoutWidget)
         self.longitude_input.setObjectName("longitude_input")
+        self.longitude_input.setPlaceholderText('Широта')
         self.horizontalLayout.addWidget(self.longitude_input)
 
         self.latitude_input = QtWidgets.QLineEdit(self.horizontalLayoutWidget)
         self.latitude_input.setObjectName("latitude_input")
+        self.latitude_input.setPlaceholderText('Долгота')
         self.horizontalLayout.addWidget(self.latitude_input)
 
         self.coordinate_search_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
@@ -285,8 +287,8 @@ class App(QMainWindow):
         if not point_mode:
             point_mode = False
         try:
-            self.longitude = str(float(self.latitude_input.text()))
             self.latitude = str(float(self.longitude_input.text()))
+            self.longitude = str(float(self.latitude_input.text()))
             self.drawmap(point_mode)
         except ValueError:
             self.search_result_label.setText('Неверный формат ввода!')
